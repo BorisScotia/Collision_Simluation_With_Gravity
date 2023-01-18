@@ -17,8 +17,8 @@ class CollisionSimulation:
 
         # Set the title of the window
         pygame.display.set_caption("Elastic Collision Simulation with Gravity")
-        
-            # Create two circles for the objects
+
+        # Create two circles for the objects
         self.object1_mass = 2.0
         self.object2_mass = 3.0
         self.object1_radius = 50
@@ -31,6 +31,18 @@ class CollisionSimulation:
         self.object2_shape = pymunk.Circle(self.object2_body, self.object2_radius)
         self.object1_body.position = self.object1_pos
         self.object2_body.position = self.object2_pos
+
+        # Create walls
+        self.wall_thickness = 10
+        self.wall_left = pymunk.Segment(self.space.static_body, (0, 0), (0, self.size[1]), self.wall_thickness)
+        self.wall_right = pymunk.Segment(self.space.static_body, (self.size[0], 0), (self.size[0], self.size[1]), self.wall_thickness)
+        self.wall_top = pymunk.Segment(self.space.static_body, (0, self.size[1]), (self.size[0], self.size[1]), self.wall_thickness)
+        self.wall_bottom = pymunk.Segment(self.space.static_body, (0, 0), (self.size[0], 0), self.wall_thickness)
+        self.wall_left.elasticity = 1.0
+        self.wall_right.elasticity = 1.0
+        self.wall_top.elasticity = 1.0
+        self.wall_bottom.elasticity = 1.0
+        self.space.add(self.wall_left, self.wall_right, self.wall_top, self.wall_bottom)
 
         # Create a slider for controlling the mass of the objects
         self.slider_rect = pygame.Rect(50, 400, 600, 50)
@@ -63,7 +75,7 @@ class CollisionSimulation:
         self.collision_handler.data["surface"] = self.screen
         self.collision_handler.post_solve = self.collision_post_solve
 
-    def collision_post_solve(arbiter, space, data):
+    def collision_post_solve(self, arbiter, space, data):
         """This function is called after a collision is resolved."""
         # Get the bodies involved in the collision
         body1, body2 = arbiter.shapes[0].body, arbiter.shapes[1].body
@@ -129,3 +141,9 @@ class CollisionSimulation:
 if __name__ == "__main__":
     simulation = CollisionSimulation()
     simulation.run()
+
+
+
+        
+
+
