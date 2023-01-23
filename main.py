@@ -4,6 +4,7 @@
 
 import pygame
 import pymunk
+import random
 
 
 #Renders display
@@ -44,15 +45,22 @@ class Ball():
         if pos[1] >= 595 or pos[1] <= 10:
             self.body.velocity *= -1
 
+#Generates random location
+
+a = []
+
+for num in range(6):
+    b = random.randint(10, 590)
+    a.append(b)
 
 
 #Main game loop
 def game():
 
 #Makes 3 balls
-    ball_1 = Ball(300, 20, (255, 0, 0), (350, 25), 10)
-    ball_2 = Ball(200, 20, (0, 255, 0), (200, 25), 50)
-    ball_3 = Ball(450, 20, (0, 0, 255), (250, 25), 100)
+    ball_1 = Ball(a[0], a[1], (255, 0, 0), (250, 400), 10)
+    ball_2 = Ball(a[2], a[3], (0, 255, 0), (350, 400), 50)
+    ball_3 = Ball(a[4], a[5], (0, 0, 255), (150, 350), 100)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -64,10 +72,10 @@ def game():
                         space.gravity = (0,-981)
                     else:
                         space.gravity = (0,0)
-                        
+
         #Render's Balls
         display.fill((255, 255, 255))
-        ball_1.shape.elasticity = 1
+        ball_1.shape.elasticity = 0.5
         ball_2.shape.elasticity = 0.3
         ball_3.shape.elasticity = 1
         ball_1.draw()
@@ -126,6 +134,10 @@ Doesn't account for Elastic Equations Vf1 = (m1-m2/m1+m2)*vi1
 and Vf2 = (2m/m1+m2)*vi1
 Sometimes ball goes off screen if it lands in the corners
 '''
+
+
+
+
 
 
 
